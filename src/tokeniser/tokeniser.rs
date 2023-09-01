@@ -56,7 +56,7 @@ mod test
 {
     use std::collections::HashMap;
 
-    use crate::{shared::types::QuectoType, tokeniser::token_types::QuectoToken};
+    use crate::{shared::types::{QuectoType, QuectoOperand}, tokeniser::token_types::QuectoToken};
 
     use super::Tokeniser;
 
@@ -194,33 +194,22 @@ mod test
     #[test]
     pub fn operand_test()
     {
-        let mut map = HashMap::new();
+        let mut types = Vec::new();
+        types.push(QuectoOperand::Add);
+        types.push(QuectoOperand::Subtract);
+        types.push(QuectoOperand::Divide);
+        types.push(QuectoOperand::Multiply);
+        types.push(QuectoOperand::Modulus);
+        types.push(QuectoOperand::Or);
+        types.push(QuectoOperand::And);
+        types.push(QuectoOperand::Not);
 
-        map.insert("u8", QuectoType::Qu8);
-        map.insert("u16", QuectoType::Qu16);
-        map.insert("u32", QuectoType::Qu32);
-        map.insert("u64", QuectoType::Qu64);
-
-        map.insert("i8", QuectoType::Qi8);
-        map.insert("i16", QuectoType::Qi16);
-        map.insert("i32", QuectoType::Qi32);
-        map.insert("i64", QuectoType::Qi64);
-
-        map.insert("f32", QuectoType::Qf32);
-        map.insert("f64", QuectoType::Qf64);
-
-        map.insert("bool", QuectoType::Qbool);
-        map.insert("char", QuectoType::Qchar);
-        map.insert("str", QuectoType::Qstr);
-
-        let keys = map.keys().into_iter();
-
-        for k in keys
+        for k in types
         {
             let subject = k.to_string();
             let subject = Tokeniser(subject);
             let tokens = subject.tokenise();
-            assert_eq!(QuectoToken::Type(map[k]), tokens[0]);
+            assert_eq!(QuectoToken::Operand(k), tokens[0]);
         }
     }
 }

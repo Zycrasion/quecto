@@ -69,7 +69,33 @@ impl FromStr for QuectoOperand
     {
         match s
         {
+            "+" => Ok(Self::Add),
+            "-" => Ok(Self::Subtract),
+            "*" => Ok(Self::Multiply),
+            "/" => Ok(Self::Divide),
+            "%" => Ok(Self::Modulus),
+
+            "||" => Ok(Self::Or),
+            "&&" => Ok(Self::And),
+            "!" => Ok(Self::Not),
             _ => Err(()),
         }
+    }
+}
+
+impl ToString for QuectoOperand
+{
+    fn to_string(&self) -> String {
+        match self
+        {
+            QuectoOperand::Add => "+",
+            QuectoOperand::Subtract => "-",
+            QuectoOperand::Multiply => "*",
+            QuectoOperand::Divide => "/",
+            QuectoOperand::Modulus => "%",
+            QuectoOperand::Or => "||",
+            QuectoOperand::And => "&&",
+            QuectoOperand::Not => "!",
+        }.to_string()
     }
 }
