@@ -85,7 +85,7 @@ loop for i in 0..10
 ```
 
 ## I/O in Quecto
-Aimed to be as simple as possible. While still providing options for behaviour to be expanded.
+Aimed to be as simple as possible. While still providing options for behavior to be expanded.
 ```
 fn:u8 start()
 {
@@ -97,7 +97,7 @@ fn:u8 start()
 }
 ```
 ### What is io.start()
-Just in case people want to handle I/O differently i don't want the underlying langauge library to get in the way of that, so all of quecto's I/O initialisation code will go into `io.start`, this also means that if you don't include it into your program, it won't include the code, making the binary smaller.
+Just in case people want to handle I/O differently i don't want the underlying language library to get in the way of that, so all of quecto's I/O initialization code will go into `io.start`, this also means that if you don't include it into your program, it won't include the code, making the binary smaller.
 
 ## External Quecto Files
 Will be aimed to be as simple as possible.
