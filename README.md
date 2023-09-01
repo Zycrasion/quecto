@@ -1,4 +1,5 @@
 # Quecto
+!!! USE RUST NIGHTLY !!!
 I have already tried building a language in typescript.
 Now I am going to make another one, compiled this time, in Rust.
 

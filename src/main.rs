@@ -1,8 +1,9 @@
-use std::{env::args, collections::HashMap};
+use std::{collections::HashMap, env::args};
 
-fn main() {
+fn main()
+{
     let mut arguments = HashMap::new();
-    
+
     {
         let args_vec = args().collect::<Vec<String>>();
         let mut args_iter = args_vec.into_iter();
@@ -13,7 +14,9 @@ fn main() {
             if arg.starts_with("--")
             {
                 arguments.insert(arg.clone(), args_iter.next().clone());
-            } else {
+            }
+            else
+            {
                 arguments.insert(arg.clone(), None);
             }
         }

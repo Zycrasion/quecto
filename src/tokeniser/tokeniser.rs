@@ -2,7 +2,7 @@ use super::token_types::QuectoToken;
 
 pub struct Tokeniser(pub String);
 
-fn to_char(a : &mut u8) -> char
+fn to_char(a: &mut u8) -> char
 {
     char::from_u32(a.to_owned() as u32).unwrap()
 }
@@ -13,8 +13,7 @@ impl Tokeniser
     {
         let mut tokens = Vec::new();
         // It's unsafe to write to, we aren't writing to anything therefore this is completely safe.
-        let mut iterator = unsafe {self.0.as_mut_vec()}.into_iter();
-
+        let mut iterator = unsafe { self.0.as_mut_vec() }.into_iter();
 
         'tokeniser_loop: while let Some(character) = iterator.next()
         {
@@ -57,7 +56,7 @@ mod test
 {
     use std::collections::HashMap;
 
-    use crate::{tokeniser::token_types::QuectoToken, shared::types::QuectoType};
+    use crate::{shared::types::QuectoType, tokeniser::token_types::QuectoToken};
 
     use super::Tokeniser;
 
@@ -67,7 +66,10 @@ mod test
         let subject = "\"Hello, World!\"";
         let subject = Tokeniser(subject.to_owned());
         let tokens = subject.tokenise();
-        assert_eq!(QuectoToken::StringLiteral("Hello, World!".to_owned()), tokens[0])
+        assert_eq!(
+            QuectoToken::StringLiteral("Hello, World!".to_owned()),
+            tokens[0]
+        )
     }
 
     #[test]
@@ -130,7 +132,10 @@ mod test
         let subject = "variable_name";
         let subject = Tokeniser(subject.to_owned());
         let tokens = subject.tokenise();
-        assert_eq!(QuectoToken::Identifier("variable_name".to_owned()), tokens[0])
+        assert_eq!(
+            QuectoToken::Identifier("variable_name".to_owned()),
+            tokens[0]
+        )
     }
 
     #[test]
@@ -155,6 +160,39 @@ mod test
 
     #[test]
     pub fn type_test()
+    {
+        let mut map = HashMap::new();
+
+        map.insert("u8", QuectoType::Qu8);
+        map.insert("u16", QuectoType::Qu16);
+        map.insert("u32", QuectoType::Qu32);
+        map.insert("u64", QuectoType::Qu64);
+
+        map.insert("i8", QuectoType::Qi8);
+        map.insert("i16", QuectoType::Qi16);
+        map.insert("i32", QuectoType::Qi32);
+        map.insert("i64", QuectoType::Qi64);
+
+        map.insert("f32", QuectoType::Qf32);
+        map.insert("f64", QuectoType::Qf64);
+
+        map.insert("bool", QuectoType::Qbool);
+        map.insert("char", QuectoType::Qchar);
+        map.insert("str", QuectoType::Qstr);
+
+        let keys = map.keys().into_iter();
+
+        for k in keys
+        {
+            let subject = k.to_string();
+            let subject = Tokeniser(subject);
+            let tokens = subject.tokenise();
+            assert_eq!(QuectoToken::Type(map[k]), tokens[0]);
+        }
+    }
+
+    #[test]
+    pub fn operand_test()
     {
         let mut map = HashMap::new();
 

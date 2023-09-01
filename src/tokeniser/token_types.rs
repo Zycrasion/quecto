@@ -1,4 +1,4 @@
-use crate::shared::types::{QuectoType, QuectoOperand};
+use crate::shared::types::{QuectoOperand, QuectoType};
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum QuectoToken
@@ -14,7 +14,7 @@ pub enum QuectoToken
     OtherPunctuation(char),
     Type(QuectoType),
     Operand(QuectoOperand),
-    Unknown
+    Unknown,
 }
 
 impl QuectoToken
@@ -29,6 +29,6 @@ impl QuectoToken
 
     pub fn is_unknown(&self) -> bool
     {
-        return self == &QuectoToken::Unknown
+        return self == &QuectoToken::Unknown;
     }
 }
