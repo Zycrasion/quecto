@@ -56,7 +56,10 @@ impl Tokeniser
                 while let Some(chara) = iterator.peek()
                 {
                     let chara = char::from_u32(**chara as u32).unwrap();
-                    if !chara.is_alphanumeric() {break;}
+                    if !chara.is_alphanumeric()
+                    {
+                        break;
+                    }
                     iterator.next().unwrap();
 
                     str_buff.push(chara);
