@@ -57,8 +57,7 @@ impl Tokeniser
                 {
                     let chara = char::from_u32(**chara as u32).unwrap();
                     if !chara.is_alphabetic() {break;}
-                    let chara = iterator.next().unwrap();
-                    let chara = char::from_u32(*chara as u32).unwrap();
+                    iterator.next().unwrap();
 
                     str_buff.push(chara);
                 }
