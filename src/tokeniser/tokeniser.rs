@@ -90,6 +90,35 @@ impl Tokeniser
                 tokens.push(QuectoToken::SemiColon);
                 continue 'tokeniser_loop;
             }
+
+            if character.is_numeric()
+            {
+                let mut str_buff = String::from(character);
+                while let Some(chara) = iterator.peek()
+                {
+                    let chara = char::from_u32(**chara as u32).unwrap();
+                    if !(chara.is_numeric() || chara == '.')
+                    {
+                        break;
+                    }
+                    iterator.next().unwrap();
+
+                    str_buff.push(chara);
+                }
+
+                if str_buff.contains('.')
+                {
+                    let x = f64::from_str(&str_buff).unwrap();
+                    tokens.push(QuectoToken::FloatLiteral(x));
+                }
+                else
+                {
+                    let x = i64::from_str(&str_buff).unwrap();
+                    tokens.push(QuectoToken::IntLiteral(x));
+                }
+
+                continue 'tokeniser_loop;
+            }
         }
 
         return tokens;
