@@ -76,6 +76,17 @@ impl Tokeniser
                 tokens.push(QuectoToken::Identifier(str_buff));
                 continue 'tokeniser_loop;
             }
+
+            if character == ':'
+            {
+                tokens.push(QuectoToken::Colon);
+                continue 'tokeniser_loop;
+            }
+            if character == ';'
+            {
+                tokens.push(QuectoToken::SemiColon);
+                continue 'tokeniser_loop;
+            }
         }
 
         return tokens;
