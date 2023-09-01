@@ -5,7 +5,7 @@ Now I am going to make another one, compiled this time, in Rust.
 
 ## Checklist:
 - [x] Basic Syntax document [quecto.md](quecto.md)
-- [ ] Tokenising
+- [x] Tokenising
 - [ ] Abstract Syntax Tree Building (AST)
 - [ ] Compiler
   - [ ] x86_64 Representation in rust
