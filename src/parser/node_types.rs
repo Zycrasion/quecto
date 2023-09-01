@@ -1,8 +1,11 @@
+use crate::shared::types::{QuectoType, QuectoOperand, QuectoTypeContainer, QuectoNumberTypes};
 
-
-pub enum QuectoToken
+pub enum QuectoNode
 {
-    Return(Box<QuectoToken>),
+    Scope(Vec<QuectoNode>),
+    Return(Box<QuectoNode>),
     FunctionDeclaration(QuectoType, String),
-    Operand(QuectoOperand, Box<QuectoToken>, Box<QuectoToken>),
+    Operand(QuectoOperand, Box<QuectoNode>, Box<QuectoNode>),
+    Number(QuectoNumberTypes),
+    VariableDeclaration(String, QuectoTypeContainer)
 }

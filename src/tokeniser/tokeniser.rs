@@ -23,6 +23,27 @@ impl Tokeniser
         {
             let character = char::from_u32(character.clone() as u32).unwrap();
 
+            if character == '/'
+            {
+                let char = iterator.peek();
+                if let Some(char) = char
+                {
+                    let char = **char;
+                    let char = char::from_u32(char.to_owned() as u32).unwrap();
+                    if char == '/'
+                    {
+                        while let Some(char) = iterator.next()
+                        {
+                            let char = char::from_u32(*char as u32).unwrap();
+                            if char == '\n'
+                            {
+                                continue 'tokeniser_loop;
+                            }
+                        }
+                    }
+                }
+            }   
+
             if character == '"'
             {
                 let mut str_buff = String::new();

@@ -18,6 +18,39 @@ pub enum QuectoType
     Qstr,
 }
 
+#[derive(Clone, PartialEq, Debug)]
+pub enum QuectoTypeContainer
+{
+    Qu8(u8),
+    Qu16(u16),
+    Qu32(u32),
+    Qu64(u64),
+    Qi8(i8),
+    Qi16(i16),
+    Qi32(i32),
+    Qi64(i64),
+    Qf32(f32),
+    Qf64(f64),
+    Qbool(bool),
+    Qchar(char),
+    Qstr(String),
+}
+
+#[derive(Clone, PartialEq, Debug)]
+pub enum QuectoNumberTypes
+{
+    Qu8(u8),
+    Qu16(u16),
+    Qu32(u32),
+    Qu64(u64),
+    Qi8(i8),
+    Qi16(i16),
+    Qi32(i32),
+    Qi64(i64),
+    Qf32(f32),
+    Qf64(f64),
+}
+
 impl FromStr for QuectoType
 {
     type Err = ();
