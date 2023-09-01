@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::shared::types::QuectoType;
+use crate::shared::types::{QuectoOperand, QuectoType};
 
 use super::token_types::QuectoToken;
 
@@ -119,6 +119,41 @@ impl Tokeniser
 
                 continue 'tokeniser_loop;
             }
+
+            if character.is_ascii_punctuation()
+            {
+                if character == '|' || character == '&'
+                {
+                    let char = char::from_u32(**iterator.peek().unwrap() as u32).unwrap();
+                    if char == character
+                    {
+                        iterator.next();
+                        let mut final_op = String::from(character);
+                        final_op.push(char);
+                        if let Ok(op) = QuectoOperand::from_str(&final_op)
+                        {
+                            tokens.push(QuectoToken::Operand(op));
+                            continue 'tokeniser_loop;
+                        }
+                        else
+                        {
+                            panic!();
+                        }
+                    }
+                }
+
+                if let Ok(op) = QuectoOperand::from_str(&character.to_string())
+                {
+                    tokens.push(QuectoToken::Operand(op));
+                }
+                else
+                {
+                    tokens.push(QuectoToken::OtherPunctuation(character));
+                }
+                continue 'tokeniser_loop;
+            }
+
+            panic!();
         }
 
         return tokens;
