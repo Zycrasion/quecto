@@ -10,7 +10,7 @@ fn:u8 start()
 ```
 
 ## Variables in Quecto
-Variables in quecto will be very similar to rust syntax, however, all types MUST be explicit.
+Variables in quecto will be very similar to rust syntax, however, all types are be explicit.
 ```
 let unsigned_8_bit_value : u8 = 255;
 let signed_16_bit_value : i16 = 32_000;
