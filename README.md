@@ -13,7 +13,7 @@ Now I am going to make another one, compiled this time, in Rust.
     - [ ] Linux
   - [ ] Return statement
   - [ ] Maths
-  - [ ] Variables
+  - [ ] Variables (At the same time as doing maths)
     - [ ] Types
   - [ ] Control Flow
     - [ ] If Statements
@@ -26,4 +26,8 @@ Now I am going to make another one, compiled this time, in Rust.
   - [ ] Function Definitions
     - [ ] System-V ABI
   - [ ] Other Features i haven't thought of yet
+- [ ] Good CLI
+  - [ ] Better Help Menu
+  - [ ] Flags to help debug programs
+    - [ ] Outputting debug symbols?
 - [ ] Meshing External Libraries With Quecto Binaries
