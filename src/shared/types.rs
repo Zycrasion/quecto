@@ -85,7 +85,8 @@ impl FromStr for QuectoOperand
 
 impl ToString for QuectoOperand
 {
-    fn to_string(&self) -> String {
+    fn to_string(&self) -> String
+    {
         match self
         {
             QuectoOperand::Add => "+",
@@ -96,6 +97,7 @@ impl ToString for QuectoOperand
             QuectoOperand::Or => "||",
             QuectoOperand::And => "&&",
             QuectoOperand::Not => "!",
-        }.to_string()
+        }
+        .to_string()
     }
 }

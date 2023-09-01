@@ -1,3 +1,7 @@
+use std::str::FromStr;
+
+use crate::shared::types::QuectoType;
+
 use super::token_types::QuectoToken;
 
 pub struct Tokeniser(pub String);
@@ -13,7 +17,7 @@ impl Tokeniser
     {
         let mut tokens = Vec::new();
         // It's unsafe to write to, we aren't writing to anything therefore this is completely safe.
-        let mut iterator = unsafe { self.0.as_mut_vec() }.into_iter();
+        let mut iterator = unsafe { self.0.as_mut_vec() }.into_iter().peekable();
 
         'tokeniser_loop: while let Some(character) = iterator.next()
         {
@@ -45,6 +49,34 @@ impl Tokeniser
                 assert_eq!('\'', to_char(iterator.next().unwrap()));
                 continue 'tokeniser_loop;
             }
+
+            if character.is_alphabetic()
+            {
+                let mut str_buff = String::from(character);
+                while let Some(chara) = iterator.peek()
+                {
+                    let chara = char::from_u32(**chara as u32).unwrap();
+                    if !chara.is_alphabetic() {break;}
+                    let chara = iterator.next().unwrap();
+                    let chara = char::from_u32(*chara as u32).unwrap();
+
+                    str_buff.push(chara);
+                }
+
+                if let Ok(type_name) = QuectoType::from_str(&str_buff)
+                {
+                    tokens.push(QuectoToken::Type(type_name));
+                    continue 'tokeniser_loop;
+                }
+                else if str_buff == "true" || str_buff == "false"
+                {
+                    tokens.push(QuectoToken::BoolLiteral(str_buff == "true"));
+                    continue 'tokeniser_loop;
+                }
+
+                tokens.push(QuectoToken::Identifier(str_buff));
+                continue 'tokeniser_loop;
+            }
         }
 
         return tokens;
@@ -56,7 +88,10 @@ mod test
 {
     use std::collections::HashMap;
 
-    use crate::{shared::types::{QuectoType, QuectoOperand}, tokeniser::token_types::QuectoToken};
+    use crate::{
+        shared::types::{QuectoOperand, QuectoType},
+        tokeniser::token_types::QuectoToken,
+    };
 
     use super::Tokeniser;
 
