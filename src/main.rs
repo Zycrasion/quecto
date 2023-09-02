@@ -1,8 +1,10 @@
-use std::{collections::HashMap, env::args};
+use std::{collections::HashMap, env::args, fs, path::Path};
+
+use quecto::tokeniser::{self, Tokeniser};
 
 fn main()
 {
-    let mut arguments = HashMap::new();
+    let mut arguments : HashMap<String, Option<String>> = HashMap::new();
 
     {
         let args_vec = args().collect::<Vec<String>>();
@@ -24,11 +26,46 @@ fn main()
 
     if arguments.contains_key("help")
     {
-        println!("HELP:");
-        println!("-help           - Open this");
-        println!("--file <file>   - Input File");
-        println!("--output <file> - Output to File");
-        println!("-debug          - Output every file");
+        help();
         return;
     }
+
+    if let Some(path_string) = arguments.get("--file")
+    {
+        if let Some(path_string) = path_string
+        {
+            let path = Path::new(path_string);
+            if !path.exists()
+            {
+                eprintln!("FILE DOESN'T EXIST {path_string}");
+            }
+            let contents = fs::read_to_string(path).unwrap();
+            compile_single_file(contents, arguments.contains_key("-tokens")).unwrap()
+        }
+    } else {
+        println!("INCORRECT USAGE: EXPECTED INPUT FILE");
+        help();
+    }
+}
+
+fn help()
+{
+    println!("HELP:");
+    println!("-help           - Open this");
+    println!("--file <file>   - Input File");
+    println!("--output <file> - Output to File");
+    println!("-tokens          - Print Tokens");
+    return;
+}
+
+fn compile_single_file(contents : String, print_tokens : bool) -> Result<(), ()>
+{
+    let tokeniser = Tokeniser(contents);
+    let tokens = tokeniser.tokenise();
+    if print_tokens
+    {
+        println!("{:#?}", tokens);
+    }
+
+    Ok(())
 }

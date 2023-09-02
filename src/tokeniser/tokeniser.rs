@@ -174,6 +174,11 @@ impl Tokeniser
                 continue 'tokeniser_loop;
             }
 
+            if character.is_whitespace()
+            {
+                continue 'tokeniser_loop;
+            }
+
             panic!();
         }
 
