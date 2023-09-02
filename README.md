@@ -1,5 +1,6 @@
 # Quecto
-!!! USE RUST NIGHTLY !!!
+!!! USE RUST NIGHTLY !!! (just for cargo +nightly fmt)
+
 I have already tried building a language in typescript.
 Now I am going to make another one, compiled this time, in Rust.
 By Reading the checklist you can probably see the amount of tests that will be implemented,
