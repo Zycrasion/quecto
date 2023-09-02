@@ -1,10 +1,13 @@
 use std::{collections::HashMap, env::args, fs, path::Path, str::FromStr};
 
-use quecto::{tokeniser::{self, Tokeniser}, parser::Parser};
+use quecto::{
+    parser::Parser,
+    tokeniser::{self, Tokeniser},
+};
 
 fn main()
 {
-    let mut arguments : HashMap<String, Option<String>> = HashMap::new();
+    let mut arguments: HashMap<String, Option<String>> = HashMap::new();
 
     {
         let args_vec = args().collect::<Vec<String>>();
@@ -40,9 +43,16 @@ fn main()
                 eprintln!("FILE DOESN'T EXIST {path_string}");
             }
             let contents = fs::read_to_string(path).unwrap();
-            compile_single_file(contents, arguments.contains_key("-tokens"),  arguments.contains_key("-nodes")).unwrap()
+            compile_single_file(
+                contents,
+                arguments.contains_key("-tokens"),
+                arguments.contains_key("-nodes"),
+            )
+            .unwrap()
         }
-    } else {
+    }
+    else
+    {
         println!("INCORRECT USAGE: EXPECTED INPUT FILE");
         help();
     }
@@ -59,7 +69,7 @@ fn help()
     return;
 }
 
-fn compile_single_file(contents : String, print_tokens : bool, print_nodes : bool) -> Result<(), ()>
+fn compile_single_file(contents: String, print_tokens: bool, print_nodes: bool) -> Result<(), ()>
 {
     if print_tokens
     {

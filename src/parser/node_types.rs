@@ -1,11 +1,11 @@
-use crate::shared::types::{QuectoType, QuectoOperand, QuectoTypeContainer, QuectoNumberTypes};
+use crate::shared::types::{QuectoNumberTypes, QuectoOperand, QuectoType, QuectoTypeContainer};
 
 #[derive(Debug, PartialEq)]
 
 pub enum ModuleType
 {
     Main,
-    Library
+    Library,
 }
 
 #[derive(Debug, PartialEq)]
@@ -19,5 +19,5 @@ pub enum QuectoNode
     IntLiteral(i64),
     Value(QuectoTypeContainer),
     VariableDeclaration(String, QuectoTypeContainer),
-    Module(ModuleType, Vec<QuectoNode>)
+    Module(ModuleType, Vec<QuectoNode>),
 }

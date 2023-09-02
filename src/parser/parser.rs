@@ -1,8 +1,11 @@
-use std::{str::FromStr, iter::Peekable, vec::IntoIter};
+use std::{iter::Peekable, str::FromStr, vec::IntoIter};
 
-use crate::{tokeniser::{Tokeniser, QuectoToken}, shared::types::QuectoTypeContainer};
+use crate::{
+    shared::types::QuectoTypeContainer,
+    tokeniser::{QuectoToken, Tokeniser},
+};
 
-use super::node_types::{QuectoNode, ModuleType};
+use super::node_types::{ModuleType, QuectoNode};
 
 pub struct Parser(pub Tokeniser);
 
@@ -10,7 +13,8 @@ impl FromStr for Parser
 {
     type Err = ();
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(s: &str) -> Result<Self, Self::Err>
+    {
         let tokens = Tokeniser(s.to_string());
         Ok(Parser(tokens))
     }
@@ -18,27 +22,38 @@ impl FromStr for Parser
 
 impl Parser
 {
-    fn parse_token(mut token : Peekable<IntoIter<QuectoToken>>, depth : Option<usize>) -> (QuectoNode, Peekable<IntoIter<QuectoToken>>, usize)
+    fn parse_token(
+        mut token: Peekable<IntoIter<QuectoToken>>,
+        depth: Option<usize>,
+    ) -> (QuectoNode, Peekable<IntoIter<QuectoToken>>, usize)
     {
         let mut depth = depth.unwrap_or(0);
         let node = match token.nth(depth).unwrap()
         {
             crate::tokeniser::QuectoToken::IntLiteral(n) => QuectoNode::IntLiteral(n.clone()),
             crate::tokeniser::QuectoToken::FloatLiteral(n) => QuectoNode::FloatLiteral(n.clone()),
-            crate::tokeniser::QuectoToken::BoolLiteral(v) => QuectoNode::Value(QuectoTypeContainer::Qbool(v.clone())),
-            crate::tokeniser::QuectoToken::CharLiteral(v) => QuectoNode::Value(QuectoTypeContainer::Qchar(v.clone())),
-            crate::tokeniser::QuectoToken::StringLiteral(v) => QuectoNode::Value(QuectoTypeContainer::Qstr(v.clone())),
-            crate::tokeniser::QuectoToken::Identifier(i) => {
-                match i.as_str()
+            crate::tokeniser::QuectoToken::BoolLiteral(v) =>
+            {
+                QuectoNode::Value(QuectoTypeContainer::Qbool(v.clone()))
+            }
+            crate::tokeniser::QuectoToken::CharLiteral(v) =>
+            {
+                QuectoNode::Value(QuectoTypeContainer::Qchar(v.clone()))
+            }
+            crate::tokeniser::QuectoToken::StringLiteral(v) =>
+            {
+                QuectoNode::Value(QuectoTypeContainer::Qstr(v.clone()))
+            }
+            crate::tokeniser::QuectoToken::Identifier(i) => match i.as_str()
+            {
+                "return" =>
                 {
-                    "return" => {
-                        let (return_value, a, new_depth) = Parser::parse_token(token, Some(depth));
-                        token = a;
-                        depth = new_depth;
-                        QuectoNode::Return(Box::new(return_value))
-                    }
-                    _ => panic!()
+                    let (return_value, a, new_depth) = Parser::parse_token(token, Some(depth));
+                    token = a;
+                    depth = new_depth;
+                    QuectoNode::Return(Box::new(return_value))
                 }
+                _ => panic!(),
             },
             crate::tokeniser::QuectoToken::Colon => todo!(),
             crate::tokeniser::QuectoToken::SemiColon => todo!(),
@@ -79,7 +94,7 @@ mod test
 {
     use std::str::FromStr;
 
-    use crate::parser::node_types::{QuectoNode, ModuleType};
+    use crate::parser::node_types::{ModuleType, QuectoNode};
 
     use super::Parser;
 
@@ -88,6 +103,12 @@ mod test
     {
         let parser = Parser::from_str("return 0;").unwrap();
         let nodes = parser.parse();
-        assert_eq!(nodes, QuectoNode::Module(ModuleType::Main, vec![QuectoNode::Return(Box::new(QuectoNode::IntLiteral(0)))]));
+        assert_eq!(
+            nodes,
+            QuectoNode::Module(
+                ModuleType::Main,
+                vec![QuectoNode::Return(Box::new(QuectoNode::IntLiteral(0)))]
+            )
+        );
     }
 }

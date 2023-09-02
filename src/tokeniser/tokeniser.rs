@@ -42,7 +42,7 @@ impl Tokeniser
                         }
                     }
                 }
-            }   
+            }
 
             if character == '"'
             {
