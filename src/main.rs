@@ -1,6 +1,6 @@
-use std::{collections::HashMap, env::args, fs, path::Path};
+use std::{collections::HashMap, env::args, fs, path::Path, str::FromStr};
 
-use quecto::tokeniser::{self, Tokeniser};
+use quecto::{tokeniser::{self, Tokeniser}, parser::Parser};
 
 fn main()
 {
@@ -40,7 +40,7 @@ fn main()
                 eprintln!("FILE DOESN'T EXIST {path_string}");
             }
             let contents = fs::read_to_string(path).unwrap();
-            compile_single_file(contents, arguments.contains_key("-tokens")).unwrap()
+            compile_single_file(contents, arguments.contains_key("-tokens"),  arguments.contains_key("-nodes")).unwrap()
         }
     } else {
         println!("INCORRECT USAGE: EXPECTED INPUT FILE");
@@ -54,17 +54,29 @@ fn help()
     println!("-help           - Open this");
     println!("--file <file>   - Input File");
     println!("--output <file> - Output to File");
-    println!("-tokens          - Print Tokens");
+    println!("-tokens         - Print Tokens");
+    println!("-nodes          - Print Nodes");
     return;
 }
 
-fn compile_single_file(contents : String, print_tokens : bool) -> Result<(), ()>
+fn compile_single_file(contents : String, print_tokens : bool, print_nodes : bool) -> Result<(), ()>
 {
-    let tokeniser = Tokeniser(contents);
-    let tokens = tokeniser.tokenise();
     if print_tokens
     {
-        println!("{:#?}", tokens);
+        let tokeniser = Tokeniser(contents.clone());
+        let tokens = tokeniser.tokenise();
+        if print_tokens
+        {
+            println!("{:#?}", tokens);
+        }
+    }
+
+    let parser = Parser::from_str(contents.as_str()).unwrap();
+    let nodes = parser.parse();
+
+    if print_nodes
+    {
+        println!("{:#?}", nodes);
     }
 
     Ok(())
