@@ -7,16 +7,21 @@ This should be fairly easy thanks to rusts test system. The reason why there are
 tests is because i want to know when something breaks before i start implementing new 
 features.
 
+## Other README's
+Read them before reading the rest of the document, listed in correct order
+1. [Syntax Document](quecto.md)
+2. [System Call's In Quecto](syscalls.md)
+
 ## Checklist:
 - [x] Basic Syntax document [quecto.md](quecto.md)
 - [x] Tokenising
 - [ ] Abstract Syntax Tree Building (AST)
-  - [ ] Return Statement - return u8
-  - [ ] Values
-    - [ ] Numbers
-    - [ ] Booleans
-    - [ ] Characters
-    - [ ] Strings
+  - [x] Return Statement - return u8
+  - [x] Values
+    - [x] Numbers
+    - [x] Booleans
+    - [x] Characters
+    - [x] Strings
   - [ ] Maths
   - [ ] Variables
     - [ ] Declaration
