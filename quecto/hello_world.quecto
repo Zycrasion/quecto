@@ -1,7 +1,7 @@
 fn:u8 start()
 {
-    io.start();
-    io.log("Hello world");
+    let str = "Hello World!";
+    write(1, str, str_len(str))
 
     return 0;
 }
