@@ -11,6 +11,21 @@ features.
 ## Name
 It's a metric prefix, representing 10 to the power of -30.
 
+## Compiling
+This has been tested on WSL.
+### Predefined programs
+```bash
+cargo run -- --file quecto/test.quecto --output quecto/build/test
+./quecto/build/test
+```
+
+### Testing
+There should be many tests for the program already.
+just run
+```bash
+cargo test
+```
+
 ## Other README's
 Read them before reading the rest of the document, listed in correct order
 1. [Syntax Document](quecto.md)
