@@ -9,6 +9,23 @@ fn:u8 start()
 }
 ```
 
+Currently this compiles to:
+
+```x86_64
+section .text
+global _start
+
+_start:
+    call start
+    mov rdi, rax
+    mov rax, 60
+    syscall
+
+start:
+    mov rax, 0
+    ret
+```
+
 ## Variables in Quecto
 Variables in quecto will be very similar to rust syntax, however, all types are explicit.
 ```
