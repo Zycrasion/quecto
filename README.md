@@ -11,6 +11,12 @@ features.
 ## Name
 It's a metric prefix, representing 10 to the power of -30.
 
+## Dependencies
+Nasm atleast version 2.
+```bash
+sudo apt install nasm
+```
+
 ## Compiling
 This has been tested on WSL.
 ### Predefined programs
