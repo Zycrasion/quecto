@@ -8,6 +8,9 @@ This should be fairly easy thanks to rusts test system. The reason why there are
 tests is because i want to know when something breaks before i start implementing new 
 features.
 
+## Name
+It's a metric prefix, representing 10 to the power of -30.
+
 ## Other README's
 Read them before reading the rest of the document, listed in correct order
 1. [Syntax Document](quecto.md)
