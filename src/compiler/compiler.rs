@@ -71,7 +71,6 @@ impl Compiler
             while let Some(_) = nodes.peek()
             {
                 assembly.append(&mut Compiler::compile_node(&mut nodes, system));
-                nodes.next();
             }
             
         } else {

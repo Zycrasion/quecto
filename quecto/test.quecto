@@ -1,0 +1,9 @@
+fn:u8 test()
+{
+    return 0;
+}
+
+fn:u8 start()
+{
+    return 0;
+}
