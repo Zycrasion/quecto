@@ -13,7 +13,7 @@ pub enum QuectoNode
 {
     Scope(Vec<QuectoNode>),
     Return(Box<QuectoNode>),
-    FunctionDeclaration(QuectoType, String),
+    FunctionDeclaration(QuectoType, String, Box<QuectoNode>),
     Operand(QuectoOperand, Box<QuectoNode>, Box<QuectoNode>),
     FloatLiteral(f64),
     IntLiteral(i64),

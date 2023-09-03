@@ -18,6 +18,27 @@ pub enum QuectoType
     Qstr,
 }
 
+impl Display for QuectoType
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            QuectoType::Qu8     => "u8",
+            QuectoType::Qu16    => "u16",
+            QuectoType::Qu32    => "u32",
+            QuectoType::Qu64    => "u64",
+            QuectoType::Qi8     => "i8",
+            QuectoType::Qi16    => "i16",
+            QuectoType::Qi32    => "i32",
+            QuectoType::Qi64    => "i64",
+            QuectoType::Qf32    => "f32",
+            QuectoType::Qf64    => "f64",
+            QuectoType::Qbool   => "bool",
+            QuectoType::Qchar   => "char",
+            QuectoType::Qstr    => "str",
+        })
+    }
+}
+
 #[derive(Clone, PartialEq, Debug)]
 pub enum QuectoTypeContainer
 {

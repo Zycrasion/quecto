@@ -34,7 +34,7 @@ impl Compiler
                             assembly.push(Assembly::Syscall);
                         }
                     },
-                    QuectoNode::FunctionDeclaration(_, _) => todo!(),
+                    QuectoNode::FunctionDeclaration(..) => todo!(),
                     QuectoNode::Operand(_, _, _) => todo!(),
                     QuectoNode::FloatLiteral(_) => todo!(),
                     QuectoNode::IntLiteral(_) => todo!(),
