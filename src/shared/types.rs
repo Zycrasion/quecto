@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{str::FromStr, fmt::Display};
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub enum QuectoType
@@ -49,6 +49,26 @@ pub enum QuectoNumberTypes
     Qi64(i64),
     Qf32(f32),
     Qf64(f64),
+}
+
+impl Display for QuectoNumberTypes
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let val = match self {
+            QuectoNumberTypes::Qu8(v)   => v.to_string(),
+            QuectoNumberTypes::Qu16(v)  => v.to_string(),
+            QuectoNumberTypes::Qu32(v)  => v.to_string(),
+            QuectoNumberTypes::Qu64(v)  => v.to_string(),
+            QuectoNumberTypes::Qi8(v)   => v.to_string(),
+            QuectoNumberTypes::Qi16(v)  => v.to_string(),
+            QuectoNumberTypes::Qi32(v)  => v.to_string(),
+            QuectoNumberTypes::Qi64(v)  => v.to_string(),
+            QuectoNumberTypes::Qf32(v)  => v.to_string(),
+            QuectoNumberTypes::Qf64(v)  => v.to_string(),
+        };
+
+        write!(f, "{val}")
+    }
 }
 
 impl FromStr for QuectoType
