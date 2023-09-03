@@ -4,6 +4,7 @@ use crate::shared::types::{QuectoOperand, QuectoType};
 
 use super::token_types::QuectoToken;
 
+#[derive(Clone)]
 pub struct Tokeniser(pub String);
 
 fn to_char(a: &mut u8) -> char

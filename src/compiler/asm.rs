@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::fmt::{Display, format};
 
 use crate::shared::types::QuectoNumberTypes;
 
@@ -103,9 +103,11 @@ impl Display for Source
 #[derive(Debug, Clone, PartialEq)]
 pub enum Assembly
 {
-    Mov(Source, Source),
+    Mov(Destination, Source),
     Syscall,
     Label(String),
+    Global(String),
+    Section(String)
 }
 
 impl ToString for Assembly
@@ -124,6 +126,9 @@ impl ToString for Assembly
             Assembly::Label(s) => {
                 String::from(format!("{s}:"))
             },
+            Assembly::Global(s) => String::from(format!("global {s}")),
+            Assembly::Section(s) => String::from(format!("section {s}")),
+            
         }
     }
 }

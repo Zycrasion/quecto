@@ -1,8 +1,8 @@
-use std::{collections::HashMap, env::args, fs, path::Path, str::FromStr};
+use std::{collections::HashMap, env::args, fs, path::Path, str::FromStr, process::Command};
 
 use quecto::{
     parser::Parser,
-    tokeniser::{self, Tokeniser},
+    tokeniser::{self, Tokeniser}, compiler::Compiler,
 };
 
 fn main()
@@ -41,14 +41,43 @@ fn main()
             if !path.exists()
             {
                 eprintln!("FILE DOESN'T EXIST {path_string}");
+                panic!();
             }
             let contents = fs::read_to_string(path).unwrap();
-            compile_single_file(
+            let out = compile_single_file(
                 contents,
                 arguments.contains_key("-tokens"),
                 arguments.contains_key("-nodes"),
+                arguments.contains_key("-asm"),
             )
-            .unwrap()
+            .unwrap();
+
+
+            if let Some(output_file) = arguments.get("--output")
+            {
+                let output_file = output_file.clone().unwrap();
+                let output_file = output_file.trim();
+                let path_final = output_file.clone();
+                let path_ld = format!("{output_file}.o");
+                let path_nasm = format!("{output_file}.nasm");
+                fs::write(&path_nasm, out).unwrap();
+                Command::new("nasm")
+                    .arg(&path_nasm)
+                    .arg("-felf64")
+                    .arg(format!("-o{}", &path_ld))
+                    .spawn()
+                    .unwrap().wait().unwrap();
+                Command::new("ld")
+                    .arg(&path_ld)
+                    .arg(format!("-o{}", &path_final))
+                    .spawn()
+                    .unwrap().wait().unwrap();
+                Command::new("rm")
+                    .arg(path_ld)
+                    .arg(path_nasm)
+                    .spawn()
+                    .unwrap().wait().unwrap();
+            }
         }
     }
     else
@@ -66,10 +95,11 @@ fn help()
     println!("--output <file> - Output to File");
     println!("-tokens         - Print Tokens");
     println!("-nodes          - Print Nodes");
+    println!("-asm          - Print Assembly");
     return;
 }
 
-fn compile_single_file(contents: String, print_tokens: bool, print_nodes: bool) -> Result<(), ()>
+fn compile_single_file(contents: String, print_tokens: bool, print_nodes: bool, print_asm : bool) -> Result<String, ()>
 {
     if print_tokens
     {
@@ -82,12 +112,20 @@ fn compile_single_file(contents: String, print_tokens: bool, print_nodes: bool) 
     }
 
     let parser = Parser::from_str(contents.as_str()).unwrap();
-    let nodes = parser.parse();
 
     if print_nodes
     {
+        let nodes = parser.clone().parse();
         println!("{:#?}", nodes);
     }
 
-    Ok(())
+    let compiler = Compiler(parser);
+
+    if print_asm
+    {
+        let asm = compiler.clone().compile();
+        println!("{asm}");
+    }
+
+    Ok(compiler.compile())
 }

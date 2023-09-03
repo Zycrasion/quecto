@@ -7,6 +7,7 @@ use crate::{
 
 use super::node_types::{ModuleType, QuectoNode};
 
+#[derive(Clone)]
 pub struct Parser(pub Tokeniser);
 
 impl FromStr for Parser
