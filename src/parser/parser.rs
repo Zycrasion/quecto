@@ -1,7 +1,7 @@
 use std::{iter::Peekable, str::FromStr, vec::IntoIter};
 
 use crate::{
-    shared::types::{QuectoTypeContainer},
+    shared::types::QuectoTypeContainer,
     tokeniser::{QuectoToken, Tokeniser},
 };
 
