@@ -1,8 +1,9 @@
-use std::{collections::HashMap, env::args, fs, path::Path, str::FromStr, process::Command};
+use std::{collections::HashMap, env::args, fs, path::Path, process::Command, str::FromStr};
 
 use quecto::{
+    compiler::Compiler,
     parser::Parser,
-    tokeniser::{self, Tokeniser}, compiler::Compiler,
+    tokeniser::{self, Tokeniser},
 };
 
 fn main()
@@ -52,7 +53,6 @@ fn main()
             )
             .unwrap();
 
-
             if let Some(output_file) = arguments.get("--output")
             {
                 let output_file = output_file.clone().unwrap();
@@ -66,17 +66,23 @@ fn main()
                     .arg("-felf64")
                     .arg(format!("-o{}", &path_ld))
                     .spawn()
-                    .unwrap().wait().unwrap();
+                    .unwrap()
+                    .wait()
+                    .unwrap();
                 Command::new("ld")
                     .arg(&path_ld)
                     .arg(format!("-o{}", &path_final))
                     .spawn()
-                    .unwrap().wait().unwrap();
+                    .unwrap()
+                    .wait()
+                    .unwrap();
                 Command::new("rm")
                     .arg(path_ld)
                     .arg(path_nasm)
                     .spawn()
-                    .unwrap().wait().unwrap();
+                    .unwrap()
+                    .wait()
+                    .unwrap();
             }
         }
     }
@@ -99,7 +105,12 @@ fn help()
     return;
 }
 
-fn compile_single_file(contents: String, print_tokens: bool, print_nodes: bool, print_asm : bool) -> Result<String, ()>
+fn compile_single_file(
+    contents: String,
+    print_tokens: bool,
+    print_nodes: bool,
+    print_asm: bool,
+) -> Result<String, ()>
 {
     if print_tokens
     {

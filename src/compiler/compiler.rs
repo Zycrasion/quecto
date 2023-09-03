@@ -1,6 +1,9 @@
-use std::{vec::IntoIter, iter::Peekable, f32::consts::E};
+use std::{f32::consts::E, iter::Peekable, vec::IntoIter};
 
-use crate::{parser::{Parser, QuectoNode, ModuleType}, shared::types::QuectoNumberTypes};
+use crate::{
+    parser::{ModuleType, Parser, QuectoNode},
+    shared::types::QuectoNumberTypes,
+};
 
 use super::{Assembly, Destination, Register, Source, SupportedSystems, SystemCalls};
 
@@ -9,21 +12,27 @@ pub struct Compiler(pub Parser);
 
 impl Compiler
 {
-    fn compile_node(nodes: &mut Peekable<IntoIter<QuectoNode>>, system : SupportedSystems) -> Vec<Assembly>
+    fn compile_node(
+        nodes: &mut Peekable<IntoIter<QuectoNode>>,
+        system: SupportedSystems,
+    ) -> Vec<Assembly>
     {
         let mut assembly = vec![];
         match nodes.next().unwrap()
         {
             QuectoNode::Scope(_) => todo!(),
-            QuectoNode::Return(val) => 
+            QuectoNode::Return(val) =>
             {
                 if let QuectoNode::IntLiteral(i) = *val
                 {
-                    assembly.push(Assembly::Mov(Destination::Reg(Register::Rax), Source::Imm(QuectoNumberTypes::Qi64(i))));
+                    assembly.push(Assembly::Mov(
+                        Destination::Reg(Register::Rax),
+                        Source::Imm(QuectoNumberTypes::Qi64(i)),
+                    ));
                     assembly.push(Assembly::Return);
                 }
-            },
-            QuectoNode::FunctionDeclaration(return_type, name, executable) => 
+            }
+            QuectoNode::FunctionDeclaration(return_type, name, executable) =>
             {
                 assembly.push(Assembly::Label(name.to_string()));
                 if let QuectoNode::Scope(nodes) = *executable
@@ -32,16 +41,20 @@ impl Compiler
                     while let Some(_) = nodes.peek()
                     {
                         assembly.append(&mut Compiler::compile_node(&mut nodes, system));
-                        nodes.next();
                     }
-                } else {panic!("EXPECTED SCOPE AFTER FUNCTION");}
-            },
+                }
+                else
+                {
+                    panic!("EXPECTED SCOPE AFTER FUNCTION");
+                }
+            }
             QuectoNode::Operand(_, _, _) => todo!(),
             QuectoNode::FloatLiteral(_) => todo!(),
             QuectoNode::IntLiteral(_) => todo!(),
             QuectoNode::Value(_) => todo!(),
             QuectoNode::VariableDeclaration(_, _) => todo!(),
             QuectoNode::Module(_, _) => todo!(),
+            QuectoNode::FunctionCall(identifier) => assembly.push(Assembly::Call(identifier)),
         }
         assembly
     }
@@ -60,9 +73,11 @@ impl Compiler
             assembly.push(Assembly::Global("_start".to_string()));
             assembly.push(Assembly::Label("_start".to_string()));
             assembly.push(Assembly::Call("start".to_owned()));
-            
 
-            assembly.push(Assembly::Mov(Destination::Reg(Register::Rdi), Source::Reg(Register::Rax)));
+            assembly.push(Assembly::Mov(
+                Destination::Reg(Register::Rdi),
+                Source::Reg(Register::Rax),
+            ));
             assembly.push(SystemCalls::Exit.to_asm(system));
             assembly.push(Assembly::Syscall);
 
@@ -72,8 +87,9 @@ impl Compiler
             {
                 assembly.append(&mut Compiler::compile_node(&mut nodes, system));
             }
-            
-        } else {
+        }
+        else
+        {
             eprintln!("Literally How?");
             panic!()
         }

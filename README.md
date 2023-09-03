@@ -36,6 +36,7 @@ Read them before reading the rest of the document, listed in correct order
   - [ ] Functions
     - [x] Declaration
     - [ ] Calling
+    - [ ] Parameters
   - [ ] Control Flow
     - [ ] If Statements
     - [ ] Loops

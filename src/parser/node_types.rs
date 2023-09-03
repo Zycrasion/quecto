@@ -14,6 +14,7 @@ pub enum QuectoNode
     Scope(Vec<QuectoNode>),
     Return(Box<QuectoNode>),
     FunctionDeclaration(QuectoType, String, Box<QuectoNode>),
+    FunctionCall(String),
     Operand(QuectoOperand, Box<QuectoNode>, Box<QuectoNode>),
     FloatLiteral(f64),
     IntLiteral(i64),

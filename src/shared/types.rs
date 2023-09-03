@@ -1,4 +1,4 @@
-use std::{str::FromStr, fmt::Display};
+use std::{fmt::Display, str::FromStr};
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub enum QuectoType
@@ -20,22 +20,28 @@ pub enum QuectoType
 
 impl Display for QuectoType
 {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", match self {
-            QuectoType::Qu8     => "u8",
-            QuectoType::Qu16    => "u16",
-            QuectoType::Qu32    => "u32",
-            QuectoType::Qu64    => "u64",
-            QuectoType::Qi8     => "i8",
-            QuectoType::Qi16    => "i16",
-            QuectoType::Qi32    => "i32",
-            QuectoType::Qi64    => "i64",
-            QuectoType::Qf32    => "f32",
-            QuectoType::Qf64    => "f64",
-            QuectoType::Qbool   => "bool",
-            QuectoType::Qchar   => "char",
-            QuectoType::Qstr    => "str",
-        })
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
+    {
+        write!(
+            f,
+            "{}",
+            match self
+            {
+                QuectoType::Qu8 => "u8",
+                QuectoType::Qu16 => "u16",
+                QuectoType::Qu32 => "u32",
+                QuectoType::Qu64 => "u64",
+                QuectoType::Qi8 => "i8",
+                QuectoType::Qi16 => "i16",
+                QuectoType::Qi32 => "i32",
+                QuectoType::Qi64 => "i64",
+                QuectoType::Qf32 => "f32",
+                QuectoType::Qf64 => "f64",
+                QuectoType::Qbool => "bool",
+                QuectoType::Qchar => "char",
+                QuectoType::Qstr => "str",
+            }
+        )
     }
 }
 
@@ -74,18 +80,20 @@ pub enum QuectoNumberTypes
 
 impl Display for QuectoNumberTypes
 {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let val = match self {
-            QuectoNumberTypes::Qu8(v)   => v.to_string(),
-            QuectoNumberTypes::Qu16(v)  => v.to_string(),
-            QuectoNumberTypes::Qu32(v)  => v.to_string(),
-            QuectoNumberTypes::Qu64(v)  => v.to_string(),
-            QuectoNumberTypes::Qi8(v)   => v.to_string(),
-            QuectoNumberTypes::Qi16(v)  => v.to_string(),
-            QuectoNumberTypes::Qi32(v)  => v.to_string(),
-            QuectoNumberTypes::Qi64(v)  => v.to_string(),
-            QuectoNumberTypes::Qf32(v)  => v.to_string(),
-            QuectoNumberTypes::Qf64(v)  => v.to_string(),
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
+    {
+        let val = match self
+        {
+            QuectoNumberTypes::Qu8(v) => v.to_string(),
+            QuectoNumberTypes::Qu16(v) => v.to_string(),
+            QuectoNumberTypes::Qu32(v) => v.to_string(),
+            QuectoNumberTypes::Qu64(v) => v.to_string(),
+            QuectoNumberTypes::Qi8(v) => v.to_string(),
+            QuectoNumberTypes::Qi16(v) => v.to_string(),
+            QuectoNumberTypes::Qi32(v) => v.to_string(),
+            QuectoNumberTypes::Qi64(v) => v.to_string(),
+            QuectoNumberTypes::Qf32(v) => v.to_string(),
+            QuectoNumberTypes::Qf64(v) => v.to_string(),
         };
 
         write!(f, "{val}")

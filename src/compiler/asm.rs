@@ -1,4 +1,4 @@
-use std::fmt::{Display, format};
+use std::fmt::{format, Display};
 
 use crate::shared::types::QuectoNumberTypes;
 
@@ -21,12 +21,13 @@ pub enum Register
     R12,
     R13,
     R14,
-    R15
+    R15,
 }
 
 impl Display for Register
 {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
+    {
         let str = match self
         {
             Register::Rax => "rax",
@@ -37,8 +38,8 @@ impl Display for Register
             Register::Rdi => "rdi",
             Register::Rsp => "rsp",
             Register::Rbp => "rbp",
-            Register::R8 =>  "r8",
-            Register::R9 =>  "r9",
+            Register::R8 => "r8",
+            Register::R9 => "r9",
             Register::R10 => "r10",
             Register::R11 => "r11",
             Register::R12 => "r12",
@@ -51,7 +52,6 @@ impl Display for Register
     }
 }
 
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Destination
 {
@@ -63,8 +63,10 @@ pub enum Destination
 
 impl Display for Destination
 {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let out = match self {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
+    {
+        let out = match self
+        {
             Destination::Reg(reg) => reg.to_string(),
             Destination::MemLoc(loc) => format!("[{loc}]"),
             Destination::MemReg(reg) => format!("[{reg}]"),
@@ -82,13 +84,15 @@ pub enum Source
     MemLoc(usize),
     MemReg(Register),
     MemRegOffset(Register, usize),
-    Imm(QuectoNumberTypes)
+    Imm(QuectoNumberTypes),
 }
 
 impl Display for Source
 {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let out = match self {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
+    {
+        let out = match self
+        {
             Source::Reg(reg) => reg.to_string(),
             Source::MemLoc(loc) => format!("[{loc}]"),
             Source::MemReg(reg) => format!("[{reg}]"),
@@ -109,29 +113,22 @@ pub enum Assembly
     Global(String),
     Section(String),
     Call(String),
-    Return
+    Return,
 }
 
 impl ToString for Assembly
 {
-    fn to_string(&self) -> String {
+    fn to_string(&self) -> String
+    {
         match self
         {
-            Assembly::Mov(dest, src) => 
-            {
-                String::from(format!("mov {dest}, {src}"))
-            },
-            Assembly::Syscall =>
-            {
-                String::from("syscall")
-            }
-            Assembly::Label(s) => {
-                String::from(format!("{s}:"))
-            },
+            Assembly::Mov(dest, src) => String::from(format!("mov {dest}, {src}")),
+            Assembly::Syscall => String::from("syscall"),
+            Assembly::Label(s) => String::from(format!("{s}:")),
             Assembly::Global(s) => String::from(format!("global {s}")),
             Assembly::Section(s) => String::from(format!("section {s}")),
             Assembly::Call(s) => String::from(format!("call {s}")),
-            Assembly::Return => String::from("ret")
+            Assembly::Return => String::from("ret"),
         }
     }
 }
