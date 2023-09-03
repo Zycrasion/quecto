@@ -1,4 +1,4 @@
-use std::{f32::consts::E, iter::Peekable, vec::IntoIter};
+use std::{iter::Peekable, vec::IntoIter};
 
 use crate::{
     parser::{ModuleType, Parser, QuectoNode},
@@ -32,7 +32,7 @@ impl Compiler
                     assembly.push(Assembly::Return);
                 }
             }
-            QuectoNode::FunctionDeclaration(return_type, name, executable) =>
+            QuectoNode::FunctionDeclaration(_return_type, name, executable) =>
             {
                 assembly.push(Assembly::Label(name.to_string()));
                 if let QuectoNode::Scope(nodes) = *executable
@@ -61,13 +61,13 @@ impl Compiler
 
     pub fn compile(self) -> String
     {
-        let mut module_type = ModuleType::Main;
+        let _module_type = ModuleType::Main;
         let mut assembly = Vec::new();
         let system = SupportedSystems::Linux;
 
         let nodes = self.0.parse();
 
-        if let QuectoNode::Module(mod_type, nodes) = nodes
+        if let QuectoNode::Module(_mod_type, nodes) = nodes
         {
             assembly.push(Assembly::Section(".text".to_string()));
             assembly.push(Assembly::Global("_start".to_string()));

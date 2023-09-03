@@ -1,7 +1,7 @@
 use std::{iter::Peekable, str::FromStr, vec::IntoIter};
 
 use crate::{
-    shared::types::{QuectoType, QuectoTypeContainer},
+    shared::types::{QuectoTypeContainer},
     tokeniser::{QuectoToken, Tokeniser},
 };
 
@@ -181,7 +181,7 @@ impl Parser
             tokens.next();
         }
 
-        let mut program = QuectoNode::Module(ModuleType::Main, nodes);
+        let program = QuectoNode::Module(ModuleType::Main, nodes);
         program
     }
 }
