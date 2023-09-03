@@ -47,6 +47,7 @@ Read them before reading the rest of the document, listed in correct order
     - [x] Linux
   - [x] Return statement
     - [ ] Tests
+  - [ ] Proper Types ( Current Type System is an illusion )
   - [ ] Maths
     - [ ] Tests
   - [ ] Variables (At the same time as doing maths)

@@ -1,0 +1,5 @@
+fn:u8 start()
+{
+    let example:u8 = 10;
+    return example;
+}
