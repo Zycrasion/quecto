@@ -12,6 +12,7 @@ features.
 Read them before reading the rest of the document, listed in correct order
 1. [Syntax Document](quecto.md)
 2. [System Call's In Quecto](syscalls.md)
+3. [Quecto Example Programs](example_programs.md)
 
 ## Checklist:
 - [x] Basic Syntax document [quecto.md](quecto.md)
