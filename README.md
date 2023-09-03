@@ -13,7 +13,7 @@ Read them before reading the rest of the document, listed in correct order
 1. [Syntax Document](quecto.md)
 2. [Quecto Example Programs](example_programs.md)
 3. [ABI](ABI.md)
-4. [System Call's In Quecto](syscalls.md)
+4. [System Calls In Quecto](syscalls.md)
 
 ## Files Working
 - [simplest_program.quecto](quecto/simplest_program.quecto)
