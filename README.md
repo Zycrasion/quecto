@@ -11,8 +11,9 @@ features.
 ## Other README's
 Read them before reading the rest of the document, listed in correct order
 1. [Syntax Document](quecto.md)
-2. [System Call's In Quecto](syscalls.md)
-3. [Quecto Example Programs](example_programs.md)
+2. [Quecto Example Programs](example_programs.md)
+3. [ABI](ABI.md)
+4. [System Call's In Quecto](syscalls.md)
 
 ## Checklist:
 - [x] Basic Syntax document [quecto.md](quecto.md)
@@ -39,8 +40,8 @@ Read them before reading the rest of the document, listed in correct order
     - [ ] For Loops
 - [ ] Compiler
   - [x] x86_64 Representation in rust
-  - [ ] System Call Representation in rust
-    - [ ] Linux
+  - [x] System Call Representation in rust
+    - [x] Linux
   - [x] Return statement
     - [ ] Tests
   - [ ] Maths

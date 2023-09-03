@@ -107,7 +107,9 @@ pub enum Assembly
     Syscall,
     Label(String),
     Global(String),
-    Section(String)
+    Section(String),
+    Call(String),
+    Return
 }
 
 impl ToString for Assembly
@@ -128,7 +130,8 @@ impl ToString for Assembly
             },
             Assembly::Global(s) => String::from(format!("global {s}")),
             Assembly::Section(s) => String::from(format!("section {s}")),
-            
+            Assembly::Call(s) => String::from(format!("call {s}")),
+            Assembly::Return => String::from("ret")
         }
     }
 }

@@ -1,4 +1,4 @@
 fn:u8 start()
 {
-    return 0;
+    return 100;
 }
