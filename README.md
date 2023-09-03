@@ -28,9 +28,9 @@ Read them before reading the rest of the document, listed in correct order
   - [ ] Variables
     - [ ] Declaration
     - [ ] Referencing
-  - [ ] Scope - {}
+  - [x] Scope - {}
   - [ ] Functions
-    - [ ] Declaration
+    - [x] Declaration
     - [ ] Calling
   - [ ] Control Flow
     - [ ] If Statements
@@ -38,10 +38,10 @@ Read them before reading the rest of the document, listed in correct order
     - [ ] While Loops
     - [ ] For Loops
 - [ ] Compiler
-  - [ ] x86_64 Representation in rust
+  - [x] x86_64 Representation in rust
   - [ ] System Call Representation in rust
     - [ ] Linux
-  - [ ] Return statement
+  - [x] Return statement
     - [ ] Tests
   - [ ] Maths
     - [ ] Tests
