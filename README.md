@@ -17,6 +17,7 @@ Read them before reading the rest of the document, listed in correct order
 
 ## Files Working
 - [simplest_program.quecto](quecto/simplest_program.quecto)
+- [test.quecto](quecto/test.quecto)
 
 ## Checklist:
 - [x] Basic Syntax document [quecto.md](quecto.md)
@@ -35,7 +36,7 @@ Read them before reading the rest of the document, listed in correct order
   - [x] Scope - {}
   - [ ] Functions
     - [x] Declaration
-    - [ ] Calling
+    - [x] Calling
     - [ ] Parameters
   - [ ] Control Flow
     - [ ] If Statements
@@ -63,7 +64,7 @@ Read them before reading the rest of the document, listed in correct order
       - [ ] Tests
     - [ ] For Loops
       - [ ] Tests
-  - [ ] Function calls
+  - [x] Function calls
     - [ ] I/O Functions
       - [ ] Tests
     - [ ] Some basic system calls implemented in the language
