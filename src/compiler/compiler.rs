@@ -25,6 +25,7 @@ impl Compiler
             {
                 if let QuectoNode::IntLiteral(i) = *val
                 {
+                    assembly.push(Assembly::Pop(Destination::Reg(Register::Rbp)));
                     assembly.push(Assembly::Mov(
                         Destination::Reg(Register::Rax),
                         Source::Imm(QuectoNumberTypes::Qi64(i)),
@@ -35,6 +36,8 @@ impl Compiler
             QuectoNode::FunctionDeclaration(_return_type, name, executable) =>
             {
                 assembly.push(Assembly::Label(name.to_string()));
+                assembly.push(Assembly::Push(Source::Reg(Register::Rbp)));
+                assembly.push(Assembly::Mov(Destination::Reg(Register::Rbp), Source::Reg(Register::Rsp)));
                 if let QuectoNode::Scope(nodes) = *executable
                 {
                     let mut nodes = nodes.into_iter().peekable();
