@@ -1,10 +1,6 @@
 use std::{collections::HashMap, env::args, fs, path::Path, process::Command, str::FromStr};
 
-use quecto::{
-    compiler::Compiler,
-    parser::Parser,
-    tokeniser::Tokeniser,
-};
+use quecto::{compiler::Compiler, parser::Parser, tokeniser::Tokeniser};
 
 fn main()
 {

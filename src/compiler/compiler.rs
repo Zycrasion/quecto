@@ -37,7 +37,10 @@ impl Compiler
             {
                 assembly.push(Assembly::Label(name.to_string()));
                 assembly.push(Assembly::Push(Source::Reg(Register::Rbp)));
-                assembly.push(Assembly::Mov(Destination::Reg(Register::Rbp), Source::Reg(Register::Rsp)));
+                assembly.push(Assembly::Mov(
+                    Destination::Reg(Register::Rbp),
+                    Source::Reg(Register::Rsp),
+                ));
                 if let QuectoNode::Scope(nodes) = *executable
                 {
                     let mut nodes = nodes.into_iter().peekable();
