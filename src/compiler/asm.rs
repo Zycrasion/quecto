@@ -114,6 +114,8 @@ pub enum Assembly
     Section(String),
     Call(String),
     Return,
+    Push(Source),
+    Pop(Destination)
 }
 
 impl ToString for Assembly
@@ -129,6 +131,8 @@ impl ToString for Assembly
             Assembly::Section(s) => String::from(format!("section {s}")),
             Assembly::Call(s) => String::from(format!("call {s}")),
             Assembly::Return => String::from("ret"),
+            Assembly::Push(s) => String::from(format!("push {s}")),
+            Assembly::Pop(d) => String::from(format!("pop {d}")),     
         }
     }
 }
