@@ -16,9 +16,8 @@ pub enum QuectoNode
     FunctionDeclaration(QuectoType, String, Box<QuectoNode>),
     FunctionCall(String),
     Operand(QuectoOperand, Box<QuectoNode>, Box<QuectoNode>),
-    FloatLiteral(f64),
-    IntLiteral(i64),
     Value(QuectoTypeContainer),
     VariableDeclaration(String, QuectoTypeContainer),
+    IdentifierReference(String),
     Module(ModuleType, Vec<QuectoNode>),
 }

@@ -20,18 +20,20 @@ impl Compiler
         let mut assembly = vec![];
         match nodes.next().unwrap()
         {
+            QuectoNode::IdentifierReference(_) => todo!(),
             QuectoNode::Scope(_) => todo!(),
             QuectoNode::Return(val) =>
             {
-                if let QuectoNode::IntLiteral(i) = *val
-                {
-                    assembly.push(Assembly::Pop(Destination::Reg(Register::Rbp)));
-                    assembly.push(Assembly::Mov(
-                        Destination::Reg(Register::Rax),
-                        Source::Imm(QuectoNumberTypes::Qi64(i)),
-                    ));
-                    assembly.push(Assembly::Return);
-                }
+                panic!("FIXME");
+                // if let QuectoNode::IntLiteral(i) = *val
+                // {
+                //     assembly.push(Assembly::Pop(Destination::Reg(Register::Rbp)));
+                //     assembly.push(Assembly::Mov(
+                //         Destination::Reg(Register::Rax),
+                //         Source::Imm(QuectoNumberTypes::Qi64(i)),
+                //     ));
+                //     assembly.push(Assembly::Return);
+                // }
             }
             QuectoNode::FunctionDeclaration(_return_type, name, executable) =>
             {
@@ -55,8 +57,6 @@ impl Compiler
                 }
             }
             QuectoNode::Operand(_, _, _) => todo!(),
-            QuectoNode::FloatLiteral(_) => todo!(),
-            QuectoNode::IntLiteral(_) => todo!(),
             QuectoNode::Value(_) => todo!(),
             QuectoNode::VariableDeclaration(_, _) => todo!(),
             QuectoNode::Module(_, _) => todo!(),
