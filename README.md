@@ -12,7 +12,7 @@ features.
 It's a metric prefix, representing 10 to the power of -30.
 
 ## Dependencies
-Nasm atleast version 2.
+Nasm atleast version 2.14.
 ```bash
 sudo apt install nasm
 ```
