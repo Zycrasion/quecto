@@ -45,58 +45,33 @@ impl Display for QuectoType
     }
 }
 
-#[derive(Clone, PartialEq, Debug)]
-pub enum QuectoTypeContainer
+impl QuectoType
 {
-    Qu8(u8),
-    Qu16(u16),
-    Qu32(u32),
-    Qu64(u64),
-    Qi8(i8),
-    Qi16(i16),
-    Qi32(i32),
-    Qi64(i64),
-    Qf32(f32),
-    Qf64(f64),
-    Qbool(bool),
-    Qchar(char),
-    Qstr(String),
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum QuectoNumberTypes
-{
-    Qu8(u8),
-    Qu16(u16),
-    Qu32(u32),
-    Qu64(u64),
-    Qi8(i8),
-    Qi16(i16),
-    Qi32(i32),
-    Qi64(i64),
-    Qf32(f32),
-    Qf64(f64),
-}
-
-impl Display for QuectoNumberTypes
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result
+    pub fn is_int(&self) -> bool
     {
-        let val = match self
+        match self
         {
-            QuectoNumberTypes::Qu8(v) => v.to_string(),
-            QuectoNumberTypes::Qu16(v) => v.to_string(),
-            QuectoNumberTypes::Qu32(v) => v.to_string(),
-            QuectoNumberTypes::Qu64(v) => v.to_string(),
-            QuectoNumberTypes::Qi8(v) => v.to_string(),
-            QuectoNumberTypes::Qi16(v) => v.to_string(),
-            QuectoNumberTypes::Qi32(v) => v.to_string(),
-            QuectoNumberTypes::Qi64(v) => v.to_string(),
-            QuectoNumberTypes::Qf32(v) => v.to_string(),
-            QuectoNumberTypes::Qf64(v) => v.to_string(),
-        };
+            Self::Qi64 | Self::Qi32 | Self::Qi16 | Self::Qi8 => true,
+            _ => false,
+        }
+    }
 
-        write!(f, "{val}")
+    pub fn is_unsigned_int(&self) -> bool
+    {
+        match self
+        {
+            Self::Qu64 | Self::Qu32 | Self::Qu16 | Self::Qu8 => true,
+            _ => false,
+        }
+    }
+
+    pub fn is_float(&self) -> bool
+    {
+        match self
+        {
+            Self::Qf64 | Self::Qf32 => true,
+            _ => false,
+        }
     }
 }
 

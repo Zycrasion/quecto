@@ -1,11 +1,11 @@
 use std::{iter::Peekable, str::FromStr, vec::IntoIter};
 
-use crate::{
-    shared::types::QuectoTypeContainer,
-    tokeniser::{QuectoToken, Tokeniser},
-};
+use crate::tokeniser::{QuectoToken, Tokeniser};
 
-use super::node_types::{ModuleType, QuectoNode};
+use super::{
+    node_types::{ModuleType, QuectoNode},
+    QuectoValue,
+};
 
 #[derive(Clone)]
 pub struct Parser(pub Tokeniser);
@@ -29,22 +29,25 @@ impl Parser
     {
         let node = match token.next().unwrap()
         {
-            crate::tokeniser::QuectoToken::IntLiteral(n) => Some(QuectoNode::Value(QuectoTypeContainer::Qi64(n.clone()))),
+            crate::tokeniser::QuectoToken::IntLiteral(n) =>
+            {
+                Some(QuectoNode::Value(QuectoValue::QWORD(n as u64)))
+            }
             crate::tokeniser::QuectoToken::FloatLiteral(n) =>
             {
-                Some(QuectoNode::Value(QuectoTypeContainer::Qf64(n.clone())))
+                Some(QuectoNode::Value(QuectoValue::QWORD(f64::to_bits(n))))
             }
             crate::tokeniser::QuectoToken::BoolLiteral(v) =>
             {
-                Some(QuectoNode::Value(QuectoTypeContainer::Qbool(v.clone())))
+                Some(QuectoNode::Value(QuectoValue::BYTE(v as u8)))
             }
             crate::tokeniser::QuectoToken::CharLiteral(v) =>
             {
-                Some(QuectoNode::Value(QuectoTypeContainer::Qchar(v.clone())))
+                Some(QuectoNode::Value(QuectoValue::BYTE(v as u8)))
             }
-            crate::tokeniser::QuectoToken::StringLiteral(v) =>
+            crate::tokeniser::QuectoToken::StringLiteral(_v) =>
             {
-                Some(QuectoNode::Value(QuectoTypeContainer::Qstr(v.clone())))
+                todo!()
             }
             crate::tokeniser::QuectoToken::Identifier(i) => match i.as_str()
             {
@@ -54,18 +57,39 @@ impl Parser
                     token = a;
                     Some(QuectoNode::Return(Box::new(return_value.unwrap())))
                 }
-                "let" => 
+                "let" =>
                 {
                     assert_eq!(token.next().unwrap(), QuectoToken::Colon);
-                    let variable_type = if let QuectoToken::Type(t) = token.next().unwrap() {t} else {panic!("Expected type for variable declaration")};
+                    let variable_type = if let QuectoToken::Type(t) = token.next().unwrap()
+                    {
+                        t
+                    }
+                    else
+                    {
+                        panic!("Expected type for variable declaration")
+                    };
 
-                    let name = if let QuectoToken::Identifier(n) = token.next().unwrap() {n} else {panic!("Expected Name for variable declaration")};
+                    let name = if let QuectoToken::Identifier(n) = token.next().unwrap()
+                    {
+                        n
+                    }
+                    else
+                    {
+                        panic!("Expected Name for variable declaration")
+                    };
 
                     assert_eq!(token.next().unwrap(), QuectoToken::OtherPunctuation('='));
 
                     let result = Parser::parse_token(token);
                     token = result.1;
-                    let value = if let QuectoNode::Value(v) = result.0.unwrap() {v} else {panic!("Expected Value for variable declaration")};
+                    let value = if let QuectoNode::Value(v) = result.0.unwrap()
+                    {
+                        v
+                    }
+                    else
+                    {
+                        panic!("Expected Value for variable declaration")
+                    };
 
                     Some(QuectoNode::VariableDeclaration(name, value))
                 }
@@ -145,7 +169,9 @@ impl Parser
                     if result.is_none()
                     {
                         Some(QuectoNode::IdentifierReference(identifier.to_owned()))
-                    } else {
+                    }
+                    else
+                    {
                         result
                     }
                 }
@@ -213,7 +239,10 @@ mod test
 {
     use std::str::FromStr;
 
-    use crate::{parser::node_types::{ModuleType, QuectoNode}, shared::types::QuectoTypeContainer};
+    use crate::parser::{
+        node_types::{ModuleType, QuectoNode},
+        QuectoValue,
+    };
 
     use super::Parser;
 
@@ -226,7 +255,9 @@ mod test
             nodes,
             QuectoNode::Module(
                 ModuleType::Main,
-                vec![QuectoNode::Return(Box::new(QuectoNode::Value(QuectoTypeContainer::Qi64(0))))]
+                vec![QuectoNode::Return(Box::new(QuectoNode::Value(
+                    QuectoValue::QWORD(0)
+                )))]
             )
         );
     }

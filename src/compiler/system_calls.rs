@@ -1,11 +1,9 @@
-use crate::shared::types::QuectoNumberTypes;
+use super::{program::{Programx86_64}, Destination64, Register64, Source64};
 
-use super::{Assembly, Destination, Register, Source};
-
-#[derive(PartialEq, Eq, Clone, Copy, Debug)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum SystemCalls
 {
-    Exit,
+    Exit(Source64),
 }
 
 #[derive(PartialEq, Eq, Clone, Copy, Debug)]
@@ -16,36 +14,30 @@ pub enum SupportedSystems
 
 impl SystemCalls
 {
-    pub fn to_number(&self, system: SupportedSystems) -> i64
+    pub fn to_asm(&self, program: &mut Programx86_64)
     {
-        match self
+        match program.system
         {
-            SystemCalls::Exit =>
-            {
-                if system == SupportedSystems::Linux
-                {
-                    60
-                }
-                else
-                {
-                    panic!("None, Yet");
-                }
-            }
+            SupportedSystems::Linux => self._linux_asm(program),
         }
     }
 
-    pub fn to_asm(&self, system: SupportedSystems) -> Assembly
+    fn _linux_asm(&self, program: &mut Programx86_64)
     {
-        match system
+        match self
         {
-            SupportedSystems::Linux =>
+            SystemCalls::Exit(exit_code) => 
             {
-                let number = self.to_number(system);
-                Assembly::Mov(
-                    Destination::Reg(Register::Rax),
-                    Source::Imm(QuectoNumberTypes::Qi64(number)),
-                )
-            }
+                program.mov(
+                    Destination64::Reg(Register64::Rdi),
+                    exit_code.clone()
+                );
+                program.mov(
+                    Destination64::Reg(Register64::Rax),
+                    Source64::Imm(60)
+                );
+                program._syscall();
+            },
         }
     }
 }
