@@ -70,7 +70,7 @@ impl Display for Destination64
             Destination64::Reg(reg) => reg.to_string(),
             Destination64::MemLoc(loc) => format!("[{loc}]"),
             Destination64::MemReg(reg) => format!("[{reg}]"),
-            Destination64::MemRegOffset(reg, off) => format!("[{reg} + {off}]"),
+            Destination64::MemRegOffset(reg, off) => format!("[{reg} {} {off}]", if *off < 0 {"-"} else {"+"}),
         };
 
         write!(f, "{out}")
@@ -116,6 +116,7 @@ pub enum Asmx86_64
     Return,
     Push(Source64),
     Pop(Destination64),
+    Sub(Destination64, Source64)
 }
 
 impl ToString for Asmx86_64
@@ -133,6 +134,7 @@ impl ToString for Asmx86_64
             Asmx86_64::Return => String::from("ret"),
             Asmx86_64::Push(s) => String::from(format!("push {s}")),
             Asmx86_64::Pop(d) => String::from(format!("pop {d}")),
+            Asmx86_64::Sub(d, s) => String::from(format!("sub {d}, {s}")),
         }
     }
 }

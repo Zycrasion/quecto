@@ -1,6 +1,6 @@
 use std::{iter::Peekable, str::FromStr, vec::IntoIter};
 
-use crate::tokeniser::{QuectoToken, Tokeniser};
+use crate::{tokeniser::{QuectoToken, Tokeniser}, shared::types::QuectoType};
 
 use super::{
     node_types::{ModuleType, QuectoNode},
@@ -25,25 +25,26 @@ impl Parser
 {
     fn parse_token(
         mut token: Peekable<IntoIter<QuectoToken>>,
+        rsp : &mut usize
     ) -> (Option<QuectoNode>, Peekable<IntoIter<QuectoToken>>)
     {
         let node = match token.next().unwrap()
         {
             crate::tokeniser::QuectoToken::IntLiteral(n) =>
             {
-                Some(QuectoNode::Value(QuectoValue::QWORD(n as u64)))
+                Some(QuectoNode::Value(QuectoValue::QWORD(n as u64), QuectoType::Qu64))
             }
             crate::tokeniser::QuectoToken::FloatLiteral(n) =>
             {
-                Some(QuectoNode::Value(QuectoValue::QWORD(f64::to_bits(n))))
+                Some(QuectoNode::Value(QuectoValue::QWORD(f64::to_bits(n)), QuectoType::Qf64))
             }
             crate::tokeniser::QuectoToken::BoolLiteral(v) =>
             {
-                Some(QuectoNode::Value(QuectoValue::BYTE(v as u8)))
+                Some(QuectoNode::Value(QuectoValue::BYTE(v as u8), QuectoType::Qbool))
             }
             crate::tokeniser::QuectoToken::CharLiteral(v) =>
             {
-                Some(QuectoNode::Value(QuectoValue::BYTE(v as u8)))
+                Some(QuectoNode::Value(QuectoValue::BYTE(v as u8), QuectoType::Qchar))
             }
             crate::tokeniser::QuectoToken::StringLiteral(_v) =>
             {
@@ -53,7 +54,7 @@ impl Parser
             {
                 "return" =>
                 {
-                    let (return_value, a) = Parser::parse_token(token);
+                    let (return_value, a) = Parser::parse_token(token, rsp);
                     token = a;
                     Some(QuectoNode::Return(Box::new(return_value.unwrap())))
                 }
@@ -80,18 +81,20 @@ impl Parser
 
                     assert_eq!(token.next().unwrap(), QuectoToken::OtherPunctuation('='));
 
-                    let result = Parser::parse_token(token);
+                    let result = Parser::parse_token(token, rsp);
                     token = result.1;
-                    let value = if let QuectoNode::Value(v) = result.0.unwrap()
+                    let (value, qtype) = if let QuectoNode::Value(v, t) = result.0.unwrap()
                     {
-                        v
+                        (v,t)
                     }
                     else
                     {
                         panic!("Expected Value for variable declaration")
                     };
 
-                    Some(QuectoNode::VariableDeclaration(name, value))
+                    *rsp += value.get_size_in_bytes();
+
+                    Some(QuectoNode::VariableDeclaration(name, value, qtype, *rsp))
                 }
                 "fn" =>
                 {
@@ -123,14 +126,21 @@ impl Parser
 
                     assert_eq!(token.next(), Some(QuectoToken::OtherPunctuation(')')));
 
-                    let (scope, a) = Parser::parse_token(token);
+                    let (scope, a) = Parser::parse_token(token, rsp);
                     token = a;
 
-                    Some(QuectoNode::FunctionDeclaration(
-                        func_type,
-                        name,
-                        Box::new(scope.unwrap()),
-                    ))
+                    if let QuectoNode::Scope(nodes, rsp_size) = scope.unwrap()
+                    {
+                        Some(QuectoNode::FunctionDeclaration(
+                            func_type,
+                            name,
+                            nodes,
+                            rsp_size
+                        ))
+                    } else
+                    {
+                        None
+                    }
                 }
                 identifier =>
                 {
@@ -183,6 +193,7 @@ impl Parser
                 '{' =>
                 {
                     let mut nodes = Vec::new();
+                    let mut rsp_size = 0;
 
                     while let Some(t) = token.peek()
                     {
@@ -190,15 +201,19 @@ impl Parser
                         {
                             break;
                         }
-                        let (a, b) = Parser::parse_token(token);
+                        let (a, b) = Parser::parse_token(token, rsp);
                         token = b;
                         if let Some(node) = a
                         {
+                            if let QuectoNode::VariableDeclaration(_, val, _, _) = node
+                            {
+                                rsp_size += val.get_size_in_bytes();
+                            }
                             nodes.push(node);
                         }
                     }
 
-                    Some(QuectoNode::Scope(nodes))
+                    Some(QuectoNode::Scope(nodes, rsp_size))
                 }
                 char => panic!("Unexpected Punctuation: {char}"),
             },
@@ -216,10 +231,11 @@ impl Parser
     {
         let mut nodes = Vec::new();
         let mut tokens = self.0.tokenise().into_iter().peekable();
+        let mut rsp = 0;
 
-        while let Some(_) = tokens.peek()
+        while let Some(_) = tokens.peek()   
         {
-            let (node, token) = Self::parse_token(tokens);
+            let (node, token) = Self::parse_token(tokens, &mut rsp);
             tokens = token;
             if let Some(node) = node
             {
@@ -239,10 +255,10 @@ mod test
 {
     use std::str::FromStr;
 
-    use crate::parser::{
+    use crate::{parser::{
         node_types::{ModuleType, QuectoNode},
         QuectoValue,
-    };
+    }, shared::types::QuectoType};
 
     use super::Parser;
 
@@ -256,7 +272,8 @@ mod test
             QuectoNode::Module(
                 ModuleType::Main,
                 vec![QuectoNode::Return(Box::new(QuectoNode::Value(
-                    QuectoValue::QWORD(0)
+                    QuectoValue::QWORD(0),
+                    QuectoType::Qu64
                 )))]
             )
         );

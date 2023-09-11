@@ -1,7 +1,8 @@
 mod asm;
 mod compiler;
-mod system_calls;
 mod program;
+mod scope;
+mod system_calls;
 
 pub use asm::*;
 pub use compiler::*;

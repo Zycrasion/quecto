@@ -1,4 +1,4 @@
-use super::{program::{Programx86_64}, Destination64, Register64, Source64};
+use super::{program::Programx86_64, Destination64, Register64, Source64};
 
 #[derive(PartialEq, Clone, Debug)]
 pub enum SystemCalls
@@ -26,18 +26,12 @@ impl SystemCalls
     {
         match self
         {
-            SystemCalls::Exit(exit_code) => 
+            SystemCalls::Exit(exit_code) =>
             {
-                program.mov(
-                    Destination64::Reg(Register64::Rdi),
-                    exit_code.clone()
-                );
-                program.mov(
-                    Destination64::Reg(Register64::Rax),
-                    Source64::Imm(60)
-                );
+                program.mov(Destination64::Reg(Register64::Rdi), exit_code.clone());
+                program.mov(Destination64::Reg(Register64::Rax), Source64::Imm(60));
                 program._syscall();
-            },
+            }
         }
     }
 }
