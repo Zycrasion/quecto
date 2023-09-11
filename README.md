@@ -8,6 +8,9 @@ This should be fairly easy thanks to rusts test system. The reason why there are
 tests is because i want to know when something breaks before i start implementing new 
 features.
 
+## What's happening right now?
+I'm replacing the parser / tokeniser into it's own pipeline managed by a seperate crate. I will be developing this crate.
+
 ## Name
 It's a metric prefix, representing 10 to the power of -30.
 
