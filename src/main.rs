@@ -1,7 +1,5 @@
 use std::{collections::HashMap, env::args, fs, path::Path, process::Command, str::FromStr};
 
-use quecto::{compiler::Compiler, parser::Parser, tokeniser::Tokeniser};
-
 fn main()
 {
     let mut arguments: HashMap<String, Option<String>> = HashMap::new();
@@ -108,31 +106,32 @@ fn compile_single_file(
     print_asm: bool,
 ) -> Result<String, ()>
 {
-    if print_tokens
-    {
-        let tokeniser = Tokeniser(contents.clone());
-        let tokens = tokeniser.tokenise();
-        if print_tokens
-        {
-            println!("{:#?}", tokens);
-        }
-    }
+    todo!()
+    // if print_tokens
+    // {
+    //     let tokeniser = Tokeniser(contents.clone());
+    //     let tokens = tokeniser.tokenise();
+    //     if print_tokens
+    //     {
+    //         println!("{:#?}", tokens);
+    //     }
+    // }
 
-    let parser = Parser::from_str(contents.as_str()).unwrap();
+    // let parser = Parser::from_str(contents.as_str()).unwrap();
 
-    if print_nodes
-    {
-        let nodes = parser.clone().parse();
-        println!("{:#?}", nodes);
-    }
+    // if print_nodes
+    // {
+    //     let nodes = parser.clone().parse();
+    //     println!("{:#?}", nodes);
+    // }
 
-    let compiler = Compiler(parser);
+    // let compiler = Compiler(parser);
 
-    if print_asm
-    {
-        let asm = compiler.clone().compile();
-        println!("{asm}");
-    }
+    // if print_asm
+    // {
+    //     let asm = compiler.clone().compile();
+    //     println!("{asm}");
+    // }
 
-    Ok(compiler.compile())
+    // Ok(compiler.compile())
 }
