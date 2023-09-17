@@ -1,9 +1,9 @@
-use super::{program::Programx86_64, Destination64, Register64, Source64};
+use super::{program::Programx86_64, AsmValue, Register64};
 
 #[derive(PartialEq, Clone, Debug)]
 pub enum SystemCalls
 {
-    Exit(Source64),
+    Exit(AsmValue),
 }
 
 #[derive(PartialEq, Eq, Clone, Copy, Debug)]
@@ -28,8 +28,8 @@ impl SystemCalls
         {
             SystemCalls::Exit(exit_code) =>
             {
-                program.mov(Destination64::Reg(Register64::Rdi), exit_code.clone());
-                program.mov(Destination64::Reg(Register64::Rax), Source64::Imm(60));
+                program.mov(AsmValue::Reg(Register64::Rdi), exit_code.clone());
+                program.mov(AsmValue::Reg(Register64::Rax), AsmValue::Imm(60));
                 program._syscall();
             }
         }

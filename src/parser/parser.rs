@@ -94,6 +94,11 @@ impl Parser
 
                     *rsp += value.get_size_in_bytes();
 
+                    if qtype != variable_type
+                    {
+                        panic!();
+                    }
+
                     Some(QuectoNode::VariableDeclaration(name, value, qtype, *rsp))
                 }
                 "fn" =>
